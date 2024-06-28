@@ -1,4 +1,4 @@
-import { BAD_REQUEST } from "@shared/consts/ErrorMessageConsts";
+import { BAD_REQUEST } from "@shared/consts/ErrorConsts";
 import { HttpStatusCode } from "@shared/enums/HttpStatusCode";
 
 export class BadRequestError extends Error {
