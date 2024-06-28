@@ -1,4 +1,4 @@
-import { NOT_FOUND } from "@shared/consts/ErrorMessageConsts";
+import { NOT_FOUND } from "@shared/consts/ErrorConsts";
 import { HttpStatusCode } from "@shared/enums/HttpStatusCode";
 
 export class NotFoundError extends Error {
