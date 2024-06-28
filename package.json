@@ -1,0 +1,35 @@
+{
+  "name": "flexilease",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
+    "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "bcrypt": "^5.1.1",
+    "eslint": "^9.6.0",
+    "express": "^4.19.2",
+    "jest": "^29.7.0",
+    "joi": "^17.13.3",
+    "prettier": "^3.3.2",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0"
+  },
+  "dependencies": {
+    "celebrate": "^15.0.3",
+    "class-transformer": "^0.5.1",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^5.9.2",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.8.0",
+    "typeorm": "^0.3.20"
+  }
+}
