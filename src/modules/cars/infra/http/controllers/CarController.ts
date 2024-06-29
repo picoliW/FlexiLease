@@ -1,6 +1,7 @@
 import CreateCarService from "@modules/cars/services/CreateCarService";
 import DeleteCarService from "@modules/cars/services/DeleteCarService";
 import ListCarService from "@modules/cars/services/ListCarService";
+import ShowOneCarService from "@modules/cars/services/ShowOneCarService";
 import UpdateCarService from "@modules/cars/services/UpdateCarService";
 import { instanceToInstance } from "class-transformer";
 import { Request, Response } from "express";
@@ -74,5 +75,18 @@ export class CarController {
     });
 
     return res.status(201).json(instanceToInstance(car));
+  }
+
+  public async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const showCar = container.resolve(ShowOneCarService);
+    const objectId = new ObjectId(id);
+    const car = await showCar.execute(objectId);
+
+    if (!car) {
+      return res.status(404).json({ error: "Car not found" });
+    }
+
+    return res.json(instanceToInstance(car));
   }
 }
