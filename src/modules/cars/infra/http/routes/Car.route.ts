@@ -17,5 +17,6 @@ carsRouter.put(
   validateObjectIdMIddleware,
   carsController.update,
 );
+carsRouter.get("/:id", validateObjectIdMIddleware, carsController.show);
 
 export default carsRouter;
