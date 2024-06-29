@@ -3,6 +3,8 @@ import { dataSource } from "@shared/infra/typeorm";
 import { Repository } from "typeorm";
 import Car from "../entities/Cars";
 import { ICreateCar } from "@modules/cars/domain/models/ICreateCar";
+import { ObjectId } from "mongodb";
+import { ICars } from "@modules/cars/domain/models/ICars";
 
 class CarRepository implements ICarRepository {
   private ormRepository: Repository<Car>;
@@ -28,12 +30,11 @@ class CarRepository implements ICarRepository {
       number_of_passengers,
     });
     await this.ormRepository.save(car);
-    return car;
+    return car as ICars;
   }
-
-  public async findById(id: string): Promise<Car | null> {
+  public async findById(id: ObjectId): Promise<Car | null> {
     const car = await this.ormRepository.findOne({
-      where: { id },
+      where: { _id: id },
     });
     return car;
   }
@@ -47,6 +48,14 @@ class CarRepository implements ICarRepository {
   public async find(): Promise<Car[]> {
     const cars = await this.ormRepository.find();
     return cars;
+  }
+
+  public async remove(car: Car): Promise<void> {
+    await this.ormRepository.remove(car);
+  }
+
+  public async update(car: Car): Promise<Car> {
+    return this.ormRepository.save(car);
   }
 }
 

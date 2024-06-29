@@ -2,12 +2,13 @@ import { Exclude, Type } from "class-transformer";
 import { Column, Entity, ObjectIdColumn } from "typeorm";
 import { Accessory } from "./dtos/Acessory";
 import { IsArray, ValidateNested } from "class-validator";
+import { ObjectId } from "mongodb";
 
 @Entity("cars")
 class Car {
   @ObjectIdColumn()
   @Exclude()
-  id: string;
+  _id: ObjectId;
 
   @Column()
   model: string;

@@ -1,6 +1,6 @@
 import { Joi, celebrate } from "celebrate";
 
-export const createCarSchema = celebrate({
+export const CreateCarSchema = celebrate({
   body: {
     model: Joi.string().required(),
     color: Joi.string().required(),
