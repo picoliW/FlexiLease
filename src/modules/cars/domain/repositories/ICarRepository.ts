@@ -9,4 +9,5 @@ export interface ICarRepository {
   save(car: Car): Promise<Car>;
   find(): Promise<Car[]>;
   remove(car: Car): Promise<void>;
+  update(car: Car): Promise<Car>;
 }
