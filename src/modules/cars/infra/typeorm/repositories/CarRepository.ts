@@ -53,6 +53,10 @@ class CarRepository implements ICarRepository {
   public async remove(car: Car): Promise<void> {
     await this.ormRepository.remove(car);
   }
+
+  public async update(car: Car): Promise<Car> {
+    return this.ormRepository.save(car);
+  }
 }
 
 export default CarRepository;
