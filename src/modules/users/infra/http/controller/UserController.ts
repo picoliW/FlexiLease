@@ -6,6 +6,7 @@ import ListUserService from "@modules/users/services/ListUserService";
 import DeleteUserService from "@modules/users/services/DeleteUserService";
 import { ObjectId } from "mongodb";
 import ShowOneUserService from "@modules/users/services/ShowOneUserService";
+import UpdateUserService from "@modules/users/services/UpdateUserService";
 
 export default class UsersController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -51,12 +52,31 @@ export default class UsersController {
     const { id } = req.params;
     const showUser = container.resolve(ShowOneUserService);
     const objectId = new ObjectId(id);
-    const car = await showUser.execute(objectId);
+    const user = await showUser.execute(objectId);
 
-    if (!car) {
-      return res.status(404).json({ error: "Car not found" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    return res.json(instanceToInstance(car));
+    return res.json(instanceToInstance(user));
+  }
+
+  public async update(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const { name, cpf, birth, email, password, cep, qualified } = req.body;
+    const updateUser = container.resolve(UpdateUserService);
+    const objectId = new ObjectId(id);
+    const updatedFields = await updateUser.execute({
+      _id: objectId,
+      name,
+      cpf,
+      birth,
+      email,
+      password,
+      cep,
+      qualified,
+    });
+
+    return res.status(200).json(instanceToInstance(updatedFields));
   }
 }

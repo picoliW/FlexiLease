@@ -16,4 +16,5 @@ export interface IUsersRepository {
   find(): Promise<User[]>;
   remove(user: User): Promise<void>;
   findById(id: ObjectId): Promise<User | null>;
+  update(user: User): Promise<User>;
 }
