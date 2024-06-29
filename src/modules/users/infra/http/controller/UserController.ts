@@ -5,6 +5,7 @@ import { container } from "tsyringe";
 import ListUserService from "@modules/users/services/ListUserService";
 import DeleteUserService from "@modules/users/services/DeleteUserService";
 import { ObjectId } from "mongodb";
+import ShowOneUserService from "@modules/users/services/ShowOneUserService";
 
 export default class UsersController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -44,5 +45,18 @@ export default class UsersController {
     } catch (error) {
       return res.status(404).json({ message: "User not found" });
     }
+  }
+
+  public async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const showUser = container.resolve(ShowOneUserService);
+    const objectId = new ObjectId(id);
+    const car = await showUser.execute(objectId);
+
+    if (!car) {
+      return res.status(404).json({ error: "Car not found" });
+    }
+
+    return res.json(instanceToInstance(car));
   }
 }
