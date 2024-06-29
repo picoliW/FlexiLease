@@ -8,5 +8,6 @@ const usersRouter = Router();
 const usersController = container.resolve(UsersController);
 
 usersRouter.post("/", CreateUserSchema, CPFValidator, usersController.create);
+usersRouter.get("/", usersController.index);
 
 export default usersRouter;

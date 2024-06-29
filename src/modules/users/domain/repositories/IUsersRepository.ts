@@ -12,4 +12,5 @@ export interface IUsersRepository {
     qualified,
   }: ICreateUser): Promise<User>;
   save(user: User): Promise<User>;
+  find(): Promise<User[]>;
 }
