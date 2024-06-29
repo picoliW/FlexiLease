@@ -1,6 +1,7 @@
 import CreateCarService from "@modules/cars/services/CreateCarService";
 import DeleteCarService from "@modules/cars/services/DeleteCarService";
 import ListCarService from "@modules/cars/services/ListCarService";
+import UpdateCarService from "@modules/cars/services/UpdateCarService";
 import { instanceToInstance } from "class-transformer";
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
@@ -46,8 +47,32 @@ export class CarController {
       await deleteCar.execute({ _id: objectId });
       return res.status(204).json();
     } catch (error) {
-      console.error(`Error deleting car with ID ${id}:`, error);
       return res.status(404).json({ message: "Car not found" });
     }
+  }
+
+  public async update(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const {
+      model,
+      color,
+      year,
+      value_per_day,
+      accessories,
+      number_of_passengers,
+    } = req.body;
+    const updateCar = container.resolve(UpdateCarService);
+    const objectId = new ObjectId(id);
+    const car = await updateCar.execute({
+      _id: objectId,
+      model,
+      color,
+      year,
+      value_per_day,
+      accessories,
+      number_of_passengers,
+    });
+
+    return res.status(201).json(instanceToInstance(car));
   }
 }
