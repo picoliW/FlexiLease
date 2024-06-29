@@ -11,5 +11,6 @@ const usersController = container.resolve(UsersController);
 usersRouter.post("/", CreateUserSchema, CPFValidator, usersController.create);
 usersRouter.get("/", usersController.index);
 usersRouter.delete("/:id", validateObjectIdMIddleware, usersController.delete);
+usersRouter.get("/:id", validateObjectIdMIddleware, usersController.show);
 
 export default usersRouter;
