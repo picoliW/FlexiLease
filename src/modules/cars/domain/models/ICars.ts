@@ -1,7 +1,8 @@
 import { Accessory } from "@modules/cars/infra/typeorm/entities/dtos/Acessory";
+import { ObjectId } from "mongodb";
 
 export interface ICars {
-  id: string;
+  _id: ObjectId;
   model: string;
   color: string;
   year: string;
