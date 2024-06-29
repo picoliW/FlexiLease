@@ -1,5 +1,4 @@
 import { cpf } from "cpf-cnpj-validator";
-
 import { Request, Response, NextFunction } from "express";
 
 export default function CPFValidator(
@@ -9,7 +8,7 @@ export default function CPFValidator(
 ): void | Response {
   const { cpf: cpfValue } = request.body;
 
-  if (!cpf.isValid(cpfValue)) {
+  if (cpfValue && !cpf.isValid(cpfValue)) {
     return response.status(400).json({ message: "Invalid CPF" });
   }
 
