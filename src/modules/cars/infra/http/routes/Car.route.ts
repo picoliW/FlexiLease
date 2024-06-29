@@ -19,4 +19,9 @@ carsRouter.put(
 );
 carsRouter.get("/:id", validateObjectIdMIddleware, carsController.show);
 
+carsRouter.patch(
+  "/:id/accessories/:accessoryId",
+  carsController.updateAccessory,
+);
+
 export default carsRouter;
