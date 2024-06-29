@@ -18,6 +18,11 @@ class UsersRepository implements IUsersRepository {
     password,
     cep,
     qualified,
+    patio,
+    complement,
+    neighborhood,
+    locality,
+    uf,
   }: ICreateUser): Promise<User> {
     const user = this.ormRepository.create({
       name,
@@ -27,6 +32,11 @@ class UsersRepository implements IUsersRepository {
       password,
       cep,
       qualified,
+      patio,
+      complement,
+      neighborhood,
+      locality,
+      uf,
     });
 
     await this.ormRepository.save(user);

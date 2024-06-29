@@ -28,6 +28,21 @@ class User {
 
   @Column()
   qualified: string;
+
+  @Column()
+  patio: string;
+
+  @Column()
+  complement: string;
+
+  @Column()
+  neighborhood: string;
+
+  @Column()
+  locality: string;
+
+  @Column()
+  uf: string;
 }
 
 export default User;
