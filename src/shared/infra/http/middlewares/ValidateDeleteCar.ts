@@ -1,4 +1,4 @@
-import { ValidateObjectId } from "./ValidateObjectId";
+import { ValidateObjectId } from "./ValidateObjectIdSchema";
 import { NextFunction, Request, Response } from "express";
 
 export const validateObjectIdMIddleware = (
