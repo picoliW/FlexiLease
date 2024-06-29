@@ -10,4 +10,5 @@ export interface ICarRepository {
   find(): Promise<Car[]>;
   remove(car: Car): Promise<void>;
   update(car: Car): Promise<Car>;
+  findWithPagination(limit: number, offset: number): Promise<[Car[], number]>;
 }

@@ -57,6 +57,17 @@ class CarRepository implements ICarRepository {
   public async update(car: Car): Promise<Car> {
     return this.ormRepository.save(car);
   }
+
+  public async findWithPagination(
+    limit: number,
+    offset: number,
+  ): Promise<[Car[], number]> {
+    const [cars, total] = await this.ormRepository.findAndCount({
+      skip: offset,
+      take: limit,
+    });
+    return [cars, total];
+  }
 }
 
 export default CarRepository;
