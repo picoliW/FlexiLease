@@ -24,11 +24,14 @@
     "tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "@types/mongodb": "^4.0.7",
     "celebrate": "^15.0.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "joi-objectid": "^4.0.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.9.2",
     "reflect-metadata": "^0.2.2",
