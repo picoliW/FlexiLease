@@ -1,9 +1,18 @@
 import CreateCarService from "@modules/cars/services/CreateCarService";
+import ListCarService from "@modules/cars/services/ListCarService";
 import { instanceToInstance } from "class-transformer";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 
 export class CarController {
+  public async index(req: Request, res: Response): Promise<Response> {
+    const listCar = container.resolve(ListCarService);
+
+    const cars = await listCar.execute();
+
+    return res.json(instanceToInstance(cars));
+  }
+
   public async create(req: Request, res: Response): Promise<Response> {
     const {
       model,
