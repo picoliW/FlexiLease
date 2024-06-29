@@ -1,4 +1,4 @@
-import { ValidateObjectId } from "@modules/cars/infra/schemas/ValidateObjectIdSchema";
+import { ValidateObjectId } from "./ValidateObjectId";
 import { NextFunction, Request, Response } from "express";
 
 export const validateObjectIdMIddleware = (
