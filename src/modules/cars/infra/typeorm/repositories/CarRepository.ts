@@ -43,6 +43,11 @@ class CarRepository implements ICarRepository {
 
     return car;
   }
+
+  public async find(): Promise<Car[]> {
+    const cars = await this.ormRepository.find();
+    return cars;
+  }
 }
 
 export default CarRepository;
