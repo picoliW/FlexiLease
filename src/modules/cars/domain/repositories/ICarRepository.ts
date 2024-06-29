@@ -6,4 +6,5 @@ export interface ICarRepository {
   create(data: ICreateCar): Promise<ICars>;
   findById(id: string): Promise<Car | null>;
   save(car: Car): Promise<Car>;
+  find(): Promise<Car[]>;
 }
