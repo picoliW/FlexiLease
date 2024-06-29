@@ -2,6 +2,7 @@ import CreateCarService from "@modules/cars/services/CreateCarService";
 import DeleteCarService from "@modules/cars/services/DeleteCarService";
 import ListCarService from "@modules/cars/services/ListCarService";
 import ShowOneCarService from "@modules/cars/services/ShowOneCarService";
+import UpdateAccessoryService from "@modules/cars/services/UpdateAccessoryService";
 import UpdateCarService from "@modules/cars/services/UpdateCarService";
 import { instanceToInstance } from "class-transformer";
 import { Request, Response } from "express";
@@ -88,5 +89,26 @@ export class CarController {
     }
 
     return res.json(instanceToInstance(car));
+  }
+
+  public async updateAccessory(req: Request, res: Response): Promise<Response> {
+    const { id: carId, accessoryId } = req.params;
+    const { description } = req.body;
+    const updateAccessory = container.resolve(UpdateAccessoryService);
+
+    try {
+      const objectIdCarId = new ObjectId(carId);
+      const objectIdAccessoryId = new ObjectId(accessoryId);
+
+      const updatedCar = await updateAccessory.execute(
+        objectIdCarId,
+        objectIdAccessoryId,
+        description,
+      );
+
+      return res.json(updatedCar);
+    } catch (error) {
+      return res.status(404).json({ message: "Car or Accessory not found" });
+    }
   }
 }
