@@ -5,8 +5,30 @@ import CreateReserveService from "@modules/reserve/services/CreateReserveService
 import { ConflictError } from "@shared/errors/ConflictError";
 import { NotFoundError } from "@shared/errors/NotFoundError";
 import { BadRequestError } from "@shared/errors/BadRequestError";
+import ListReserveService from "@modules/reserve/services/ListReserveService";
 
 export default class ReserveController {
+  public async index(req: Request, res: Response): Promise<Response> {
+    let { page = 1, limit = 100 } = req.query;
+    page = Number(page);
+    limit = Number(limit);
+
+    const offset = (page - 1) * limit;
+
+    const listReserve = container.resolve(ListReserveService);
+    const { reserves, total } = await listReserve.execute({ limit, offset });
+
+    const totalPages = Math.ceil(total / limit);
+
+    return res.json({
+      reserves: reserves.map(reserve => instanceToInstance(reserve)),
+      total,
+      limit,
+      offset: page,
+      totalPages,
+    });
+  }
+
   public async create(request: Request, response: Response): Promise<Response> {
     try {
       const { id_user, start_date, end_date, id_car } = request.body;
