@@ -7,6 +7,9 @@ import DeleteUserService from "@modules/users/services/DeleteUserService";
 import { ObjectId } from "mongodb";
 import ShowOneUserService from "@modules/users/services/ShowOneUserService";
 import UpdateUserService from "@modules/users/services/UpdateUserService";
+import { ConflictError } from "@shared/errors/ConflictError";
+import { NotFoundError } from "@shared/errors/NotFoundError";
+import { BadRequestError } from "@shared/errors/BadRequestError";
 
 export default class UsersController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -22,17 +25,26 @@ export default class UsersController {
 
     const createUser = container.resolve(CreateUserService);
 
-    const user = await createUser.execute({
-      name,
-      cpf,
-      birth,
-      email,
-      password,
-      cep,
-      qualified,
-    });
+    try {
+      const user = await createUser.execute({
+        name,
+        cpf,
+        birth,
+        email,
+        password,
+        cep,
+        qualified,
+      });
 
-    return response.json(instanceToInstance(user));
+      return response.json(instanceToInstance(user));
+    } catch (error) {
+      if (error instanceof ConflictError) {
+        return response.status(409).json({ message: error.message });
+      } else if (error instanceof BadRequestError) {
+        return response.status(400).json({ message: error.message });
+      }
+      throw error;
+    }
   }
 
   public async delete(req: Request, res: Response): Promise<Response> {
@@ -64,19 +76,31 @@ export default class UsersController {
   public async update(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const { name, cpf, birth, email, password, cep, qualified } = req.body;
-    const updateUser = container.resolve(UpdateUserService);
+    const updateUserService = container.resolve(UpdateUserService);
     const objectId = new ObjectId(id);
-    const updatedFields = await updateUser.execute({
-      _id: objectId,
-      name,
-      cpf,
-      birth,
-      email,
-      password,
-      cep,
-      qualified,
-    });
 
-    return res.status(200).json(instanceToInstance(updatedFields));
+    try {
+      const updatedFields = await updateUserService.execute({
+        _id: objectId,
+        name,
+        cpf,
+        birth,
+        email,
+        password,
+        cep,
+        qualified,
+      });
+
+      return res.status(200).json(updatedFields);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        return res.status(404).json({ message: error.message });
+      } else if (error instanceof ConflictError) {
+        return res.status(409).json({ message: error.message });
+      } else if (error instanceof BadRequestError) {
+        return res.status(400).json({ message: error.message });
+      }
+      throw error;
+    }
   }
 }
