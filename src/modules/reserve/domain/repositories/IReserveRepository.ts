@@ -1,5 +1,6 @@
 import Reserve from "@modules/reserve/infra/typeorm/entities/Reserve";
 import { ICreateReserve } from "../models/ICreateReserve";
+import { ObjectId } from "mongodb";
 
 export interface IReserveRepository {
   create({
@@ -25,4 +26,5 @@ export interface IReserveRepository {
     limit: number,
     offset: number,
   ): Promise<[Reserve[], number]>;
+  findById(id: ObjectId): Promise<Reserve | null>;
 }

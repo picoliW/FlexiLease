@@ -6,6 +6,8 @@ import { ConflictError } from "@shared/errors/ConflictError";
 import { NotFoundError } from "@shared/errors/NotFoundError";
 import { BadRequestError } from "@shared/errors/BadRequestError";
 import ListReserveService from "@modules/reserve/services/ListReserveService";
+import ShowOneReserveService from "@modules/reserve/services/ShowOneReserveService";
+import { ObjectId } from "mongodb";
 
 export default class ReserveController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -50,6 +52,22 @@ export default class ReserveController {
         return response.status(400).json({ message: error.message });
       } else if (error instanceof NotFoundError) {
         return response.status(400).json({ message: error.message });
+      }
+      throw error;
+    }
+  }
+
+  public async show(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params;
+      const showReserve = container.resolve(ShowOneReserveService);
+      const objectId = new ObjectId(id);
+      const reserve = await showReserve.execute(objectId);
+
+      return res.json(instanceToInstance(reserve));
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        return res.status(404).json({ message: error.message });
       }
       throw error;
     }
