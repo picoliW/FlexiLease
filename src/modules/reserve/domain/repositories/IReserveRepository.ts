@@ -27,4 +27,5 @@ export interface IReserveRepository {
     offset: number,
   ): Promise<[Reserve[], number]>;
   findById(id: ObjectId): Promise<Reserve | null>;
+  update(reserve: Reserve): Promise<Reserve>;
 }
