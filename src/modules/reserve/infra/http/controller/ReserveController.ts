@@ -8,6 +8,7 @@ import { BadRequestError } from "@shared/errors/BadRequestError";
 import ListReserveService from "@modules/reserve/services/ListReserveService";
 import ShowOneReserveService from "@modules/reserve/services/ShowOneReserveService";
 import { ObjectId } from "mongodb";
+import UpdateReserveService from "@modules/reserve/services/UpdateReserveService";
 
 export default class ReserveController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -51,9 +52,9 @@ export default class ReserveController {
       } else if (error instanceof BadRequestError) {
         return response.status(400).json({ message: error.message });
       } else if (error instanceof NotFoundError) {
-        return response.status(400).json({ message: error.message });
+        return response.status(404).json({ message: error.message });
       }
-      throw error;
+      return response.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -69,7 +70,29 @@ export default class ReserveController {
       if (error instanceof NotFoundError) {
         return res.status(404).json({ message: error.message });
       }
-      throw error;
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  public async update(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params;
+      const { id_user, start_date, end_date } = req.body;
+      const updateReserve = container.resolve(UpdateReserveService);
+      const objectId = new ObjectId(id);
+      const reserve = await updateReserve.execute({
+        _id: objectId,
+        id_user,
+        start_date,
+        end_date,
+      });
+
+      return res.status(201).json(instanceToInstance(reserve));
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        return res.status(404).json({ message: error.message });
+      }
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 }
