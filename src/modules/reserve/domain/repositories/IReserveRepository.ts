@@ -19,4 +19,10 @@ export interface IReserveRepository {
     start_date: string,
     end_date: string,
   ): Promise<Reserve[]>;
+  find(): Promise<Reserve[]>;
+  findByParams(params: Record<string, any>): Promise<Reserve[]>;
+  findWithPagination(
+    limit: number,
+    offset: number,
+  ): Promise<[Reserve[], number]>;
 }
