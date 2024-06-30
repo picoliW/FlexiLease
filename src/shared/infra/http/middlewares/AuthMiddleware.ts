@@ -1,4 +1,3 @@
-// src/middlewares/ensureAuthenticated.ts
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 import authConfig from "@shared/utils/auth";
