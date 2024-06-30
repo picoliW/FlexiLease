@@ -54,6 +54,28 @@ class ReserveRepository implements IReserveRepository {
       where: { id_user, start_date, end_date },
     });
   }
+
+  public async find(): Promise<Reserve[]> {
+    const reserve = await this.ormRepository.find();
+    return reserve;
+  }
+
+  public async findByParams(params: Record<string, any>): Promise<Reserve[]> {
+    return this.ormRepository.find({
+      where: params,
+    });
+  }
+
+  public async findWithPagination(
+    limit: number,
+    offset: number,
+  ): Promise<[Reserve[], number]> {
+    const [reserves, total] = await this.ormRepository.findAndCount({
+      skip: offset,
+      take: limit,
+    });
+    return [reserves, total];
+  }
 }
 
 export default ReserveRepository;
