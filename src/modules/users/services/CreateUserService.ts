@@ -3,12 +3,9 @@ import { IUsersRepository } from "../domain/repositories/IUsersRepository";
 import { ICreateUser } from "../domain/models/ICreateUser";
 import User from "../infra/typeorm/entities/User";
 import axios from "axios";
-
-interface IRequest {
-  name: string;
-  email: string;
-  password: string;
-}
+import { ConflictError } from "@shared/errors/ConflictError";
+import { BadRequestError } from "@shared/errors/BadRequestError";
+import { calculateAge } from "@shared/utils/dateUtils";
 
 @injectable()
 class CreateUserService {
@@ -26,6 +23,21 @@ class CreateUserService {
     cep,
     qualified,
   }: ICreateUser): Promise<User> {
+    const existingUser = await this.usersRepository.findByCPF(cpf);
+    if (existingUser) {
+      throw new ConflictError("CPF already exists");
+    }
+
+    const existingUserByEmail = await this.usersRepository.findByEmail(email);
+    if (existingUserByEmail) {
+      throw new ConflictError("Email already exists");
+    }
+
+    const age = calculateAge(new Date(birth));
+    if (age < 18) {
+      throw new BadRequestError("User must be at least 18 years old");
+    }
+
     const response = await axios.get(`https://viacep.com.br/ws/${cep}/json`);
     const { logradouro, complemento, bairro, localidade, uf } = response.data;
 

@@ -17,4 +17,6 @@ export interface IUsersRepository {
   remove(user: User): Promise<void>;
   findById(id: ObjectId): Promise<User | null>;
   update(user: User): Promise<User>;
+  findByCPF(cpf: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
 }

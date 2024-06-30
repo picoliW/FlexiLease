@@ -6,7 +6,7 @@ export const CreateUserSchema = celebrate({
     cpf: Joi.required(),
     birth: Joi.string().required(),
     email: Joi.string().email().required(),
-    password: Joi.string().required(),
+    password: Joi.string().required().min(6),
     cep: Joi.string().required(),
     qualified: Joi.string().valid("sim", "não").required(),
   },

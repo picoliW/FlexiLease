@@ -5,7 +5,7 @@ export const UpdateUserSchema = celebrate({
     name: Joi.string(),
     birth: Joi.string(),
     email: Joi.string().email(),
-    password: Joi.string(),
+    password: Joi.string().min(6),
     cep: Joi.string(),
     qualified: Joi.string().valid("sim", "não"),
   },

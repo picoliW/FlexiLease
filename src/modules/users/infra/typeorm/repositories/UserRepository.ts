@@ -69,6 +69,18 @@ class UsersRepository implements IUsersRepository {
   public async update(user: User): Promise<User> {
     return this.ormRepository.save(user);
   }
+
+  public async findByCPF(cpf: string): Promise<User | null> {
+    const user = await this.ormRepository.findOne({
+      where: { cpf },
+    });
+    return user;
+  }
+
+  public async findByEmail(email: string): Promise<User | null> {
+    const user = await this.ormRepository.findOne({ where: { email } });
+    return user;
+  }
 }
 
 export default UsersRepository;
