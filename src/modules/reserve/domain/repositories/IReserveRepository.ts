@@ -9,4 +9,14 @@ export interface IReserveRepository {
     id_car,
   }: ICreateReserve): Promise<Reserve>;
   save(reserve: Reserve): Promise<Reserve>;
+  findByCarAndDate(
+    id_car: string,
+    start_date: string,
+    end_date: string,
+  ): Promise<Reserve[]>;
+  findByUserAndDateRange(
+    id_user: string,
+    start_date: string,
+    end_date: string,
+  ): Promise<Reserve[]>;
 }

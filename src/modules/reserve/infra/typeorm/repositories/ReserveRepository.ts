@@ -34,6 +34,26 @@ class ReserveRepository implements IReserveRepository {
     await this.ormRepository.save(reserve);
     return reserve;
   }
+
+  public async findByCarAndDate(
+    id_car: string,
+    start_date: string,
+    end_date: string,
+  ): Promise<Reserve[]> {
+    return this.ormRepository.find({
+      where: { id_car, start_date, end_date },
+    });
+  }
+
+  public async findByUserAndDateRange(
+    id_user: string,
+    start_date: string,
+    end_date: string,
+  ): Promise<Reserve[]> {
+    return this.ormRepository.find({
+      where: { id_user, start_date, end_date },
+    });
+  }
 }
 
 export default ReserveRepository;
