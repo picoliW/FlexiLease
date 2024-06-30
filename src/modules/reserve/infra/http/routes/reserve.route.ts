@@ -17,5 +17,10 @@ reserveRouter.put(
   validateObjectIdMIddleware,
   reserveController.update,
 );
+reserveRouter.delete(
+  "/:id",
+  validateObjectIdMIddleware,
+  reserveController.delete,
+);
 
 export default reserveRouter;
