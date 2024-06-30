@@ -3,6 +3,7 @@ import { IUsersRepository } from "../domain/repositories/IUsersRepository";
 import { ICreateUser } from "../domain/models/ICreateUser";
 import User from "../infra/typeorm/entities/User";
 import axios from "axios";
+import bcrypt from "bcrypt";
 import { ConflictError } from "@shared/errors/ConflictError";
 import { BadRequestError } from "@shared/errors/BadRequestError";
 import { calculateAge } from "@shared/utils/dateUtils";
@@ -49,12 +50,14 @@ class CreateUserService {
       uf: uf || "N/A",
     };
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await this.usersRepository.create({
       name,
       cpf,
       birth,
       email,
-      password,
+      password: hashedPassword,
       cep,
       qualified,
       patio: addressFields.logradouro,

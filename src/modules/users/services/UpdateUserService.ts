@@ -8,6 +8,7 @@ import { ConflictError } from "@shared/errors/ConflictError";
 import { IUpdateUser } from "../domain/models/IUpdateUser";
 import { calculateAge } from "@shared/utils/dateUtils";
 import { BadRequestError } from "@shared/errors/BadRequestError";
+import bcrypt from "bcrypt";
 
 @injectable()
 class UpdateUserService {
@@ -70,8 +71,9 @@ class UpdateUserService {
       updatedFields.email = email;
     }
     if (password) {
-      user.password = password;
-      updatedFields.password = password;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+      updatedFields.password = hashedPassword;
     }
     if (cep) {
       user.cep = cep;
