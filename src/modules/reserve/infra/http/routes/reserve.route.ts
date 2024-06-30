@@ -7,5 +7,6 @@ const reserveRouter = Router();
 const reserveController = container.resolve(ReserveController);
 
 reserveRouter.post("/", validateReserve, reserveController.create);
+reserveRouter.get("/", reserveController.index);
 
 export default reserveRouter;
