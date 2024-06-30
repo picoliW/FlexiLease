@@ -84,6 +84,10 @@ class ReserveRepository implements IReserveRepository {
     });
     return reserve;
   }
+
+  public async update(reserve: Reserve): Promise<Reserve> {
+    return this.ormRepository.save(reserve);
+  }
 }
 
 export default ReserveRepository;
