@@ -1,8 +1,9 @@
-import { Column, Entity, ObjectIdColumn } from "typeorm";
+import { Column, Entity, ObjectIdColumn, Unique } from "typeorm";
 import { Exclude } from "class-transformer";
 import { ObjectId } from "mongodb";
 
 @Entity("users")
+@Unique(["cpf"])
 class User {
   @ObjectIdColumn()
   @Exclude()
