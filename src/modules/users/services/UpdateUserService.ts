@@ -4,7 +4,10 @@ import { ObjectId } from "mongodb";
 import { IUsersRepository } from "../domain/repositories/IUsersRepository";
 import User from "../infra/typeorm/entities/User";
 import { NotFoundError } from "@shared/errors/NotFoundError";
+import { ConflictError } from "@shared/errors/ConflictError";
 import { IUpdateUser } from "../domain/models/IUpdateUser";
+import { calculateAge } from "@shared/utils/dateUtils";
+import { BadRequestError } from "@shared/errors/BadRequestError";
 
 @injectable()
 class UpdateUserService {
@@ -29,15 +32,34 @@ class UpdateUserService {
       throw new NotFoundError("User not found");
     }
 
+    if (cpf && user.cpf !== cpf) {
+      const existingUser = await this.userRepository.findByCPF(cpf);
+      if (existingUser) {
+        throw new ConflictError("CPF already exists");
+      }
+      user.cpf = cpf;
+    }
+
+    if (email && user.email !== email) {
+      const existingUserByEmail = await this.userRepository.findByEmail(email);
+      if (existingUserByEmail) {
+        throw new ConflictError("Email already exists");
+      }
+      user.email = email;
+    }
+
+    if (birth) {
+      const age = calculateAge(new Date(birth));
+      if (age < 18) {
+        throw new BadRequestError("User must be at least 18 years old");
+      }
+    }
+
     const updatedFields: Partial<User> = {};
 
     if (name) {
       user.name = name;
       updatedFields.name = name;
-    }
-    if (cpf) {
-      user.cpf = cpf;
-      updatedFields.cpf = cpf;
     }
     if (birth) {
       user.birth = birth;
