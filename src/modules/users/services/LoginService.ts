@@ -2,7 +2,6 @@ import { inject, injectable } from "tsyringe";
 import { IUsersRepository } from "../domain/repositories/IUsersRepository";
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
-import User from "../infra/typeorm/entities/User";
 import { NotFoundError } from "@shared/errors/NotFoundError";
 import { UnauthorizedError } from "@shared/errors/UnauthorizedError";
 import authConfig from "@shared/utils/auth";
