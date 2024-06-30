@@ -3,6 +3,7 @@ import { dataSource } from "@shared/infra/typeorm";
 import Reserve from "../entities/Reserve";
 import { ICreateReserve } from "@modules/reserve/domain/models/ICreateReserve";
 import { IReserveRepository } from "@modules/reserve/domain/repositories/IReserveRepository";
+import { ObjectId } from "mongodb";
 
 class ReserveRepository implements IReserveRepository {
   private ormRepository: Repository<Reserve>;
@@ -75,6 +76,13 @@ class ReserveRepository implements IReserveRepository {
       take: limit,
     });
     return [reserves, total];
+  }
+
+  public async findById(id: ObjectId): Promise<Reserve | null> {
+    const reserve = await this.ormRepository.findOne({
+      where: { _id: id },
+    });
+    return reserve;
   }
 }
 
