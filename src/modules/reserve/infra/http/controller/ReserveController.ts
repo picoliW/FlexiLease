@@ -9,6 +9,7 @@ import ListReserveService from "@modules/reserve/services/ListReserveService";
 import ShowOneReserveService from "@modules/reserve/services/ShowOneReserveService";
 import { ObjectId } from "mongodb";
 import UpdateReserveService from "@modules/reserve/services/UpdateReserveService";
+import DeleteReserveService from "@modules/reserve/services/DeleteReserveService";
 
 export default class ReserveController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -93,6 +94,19 @@ export default class ReserveController {
         return res.status(404).json({ message: error.message });
       }
       return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  public async delete(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const deleteReserve = container.resolve(DeleteReserveService);
+
+    try {
+      const objectId = new ObjectId(id);
+      await deleteReserve.execute({ _id: objectId });
+      return res.status(204).json();
+    } catch (error) {
+      return res.status(404).json({ message: "Reserve not found" });
     }
   }
 }
