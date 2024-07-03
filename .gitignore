@@ -2,3 +2,4 @@ node_modules
 .env
 insertInDatabase.py
 todo.txt
+coverage/
