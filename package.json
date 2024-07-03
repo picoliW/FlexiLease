@@ -5,7 +5,8 @@
   "scripts": {
     "test": "jest",
     "start": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
-    "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
+    "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "secure-mode": "jest --watchAll --verbose=true"
   },
   "keywords": [],
   "author": "",
@@ -15,15 +16,19 @@
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/supertest": "^6.0.2",
     "bcrypt": "^5.1.1",
     "eslint": "^9.6.0",
     "express": "^4.19.2",
     "jest": "^29.7.0",
     "joi": "^17.13.3",
     "prettier": "^3.3.2",
+    "ts-jest": "^29.1.5",
     "ts-node-dev": "^2.0.0",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.5.3"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
@@ -40,6 +45,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.9.2",
     "reflect-metadata": "^0.2.2",
+    "supertest": "^7.0.0",
     "tsyringe": "^4.8.0",
     "typeorm": "^0.3.20"
   }
