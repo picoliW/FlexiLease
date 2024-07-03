@@ -6,7 +6,6 @@ import { ObjectId } from "mongodb";
 @Unique(["cpf"])
 class User {
   @ObjectIdColumn()
-  @Exclude()
   _id: ObjectId;
 
   @Column()
