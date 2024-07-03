@@ -36,7 +36,7 @@ export default class UsersController {
         qualified,
       });
 
-      return response.json(instanceToInstance(user));
+      return response.status(201).json(instanceToInstance(user));
     } catch (error) {
       if (error instanceof ConflictError) {
         return response.status(409).json({ message: error.message });
