@@ -13,13 +13,13 @@ class DeleteUserService {
 
   public async execute({ _id }: IDeleteUser): Promise<void> {
     try {
-      const car = await this.userRepository.findById(new ObjectId(_id));
+      const user = await this.userRepository.findById(new ObjectId(_id));
 
-      if (!car) {
+      if (!user) {
         throw new NotFoundError("User not found");
       }
 
-      await this.userRepository.remove(car);
+      await this.userRepository.remove(user);
     } catch (error) {
       throw error;
     }
