@@ -4,6 +4,7 @@ import ListCarService from "@modules/cars/services/ListCarService";
 import ShowOneCarService from "@modules/cars/services/ShowOneCarService";
 import UpdateAccessoryService from "@modules/cars/services/UpdateAccessoryService";
 import UpdateCarService from "@modules/cars/services/UpdateCarService";
+import { NotFoundError } from "@shared/errors/NotFoundError";
 import { instanceToInstance } from "class-transformer";
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
@@ -78,17 +79,25 @@ export class CarController {
     } = req.body;
     const updateCar = container.resolve(UpdateCarService);
     const objectId = new ObjectId(id);
-    const car = await updateCar.execute({
-      _id: objectId,
-      model,
-      color,
-      year,
-      value_per_day,
-      accessories,
-      number_of_passengers,
-    });
 
-    return res.status(201).json(instanceToInstance(car));
+    try {
+      const car = await updateCar.execute({
+        _id: objectId,
+        model,
+        color,
+        year,
+        value_per_day,
+        accessories,
+        number_of_passengers,
+      });
+
+      return res.status(201).json(instanceToInstance(car));
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        return res.status(404).json({ message: error.message });
+      }
+      throw error;
+    }
   }
 
   public async show(req: Request, res: Response): Promise<Response> {
@@ -121,7 +130,10 @@ export class CarController {
 
       return res.json(updatedCar);
     } catch (error) {
-      return res.status(404).json({ message: "Car or Accessory not found" });
+      if (error instanceof NotFoundError) {
+        return res.status(404).json({ message: error.message });
+      }
+      throw error;
     }
   }
 }
