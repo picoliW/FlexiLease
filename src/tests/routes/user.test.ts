@@ -2,14 +2,12 @@ import request from "supertest";
 import { app } from "@shared/infra/http/app";
 import { dataSource } from "@shared/infra/typeorm";
 import { ObjectId } from "mongodb";
-import { NotFoundError } from "@shared/errors/NotFoundError";
 
 const MAIN_ROUTE = "/api/v1/user";
 let userId: ObjectId;
 
 beforeAll(async () => {
   await dataSource.initialize();
-  await dataSource.runMigrations();
 });
 
 afterAll(async () => {
@@ -94,7 +92,7 @@ describe("User Routes", () => {
       expect(response.body.length).toBeGreaterThan(0);
     });
 
-    test("Should show one user", async () => {
+    test("Should list one user by id", async () => {
       const response = await request(app).get(`${MAIN_ROUTE}/${userId}`);
 
       expect(response.status).toBe(200);
@@ -118,6 +116,12 @@ describe("User Routes", () => {
     test("Should update an user", async () => {
       const response = await request(app).put(`${MAIN_ROUTE}/${userId}`).send({
         name: "Luiz Test Update",
+        cpf: "789.909.470-49",
+        birth: "30/11/2004",
+        email: "luizUpdated@gmail.com",
+        password: "123456",
+        cep: "01153000",
+        qualified: "sim",
       });
 
       expect(response.status).toBe(200);
@@ -150,12 +154,21 @@ describe("User Routes", () => {
       expect(response.status).toBe(409);
       expect(response.body.message).toBe("Email already exists");
     });
+
+    test("Should not update an user with less than 18 years old", async () => {
+      const response = await request(app).put(`${MAIN_ROUTE}/${userId}`).send({
+        birth: "01/01/2020",
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe("User must be at least 18 years old");
+    });
   });
 
   describe("User authentication", () => {
     test("Should log-in an user", async () => {
       const response = await request(app).post("/api/v1/authenticate").send({
-        email: "luiz@gmail.com",
+        email: "luizUpdated@gmail.com",
         password: "123456",
       });
       expect(response.status).toBe(200);
@@ -173,7 +186,7 @@ describe("User Routes", () => {
 
     test("Should not log-in an user with invalid password", async () => {
       const response = await request(app).post("/api/v1/authenticate").send({
-        email: "luiz@gmail.com",
+        email: "luizUpdated@gmail.com",
         password: "1234567",
       });
       expect(response.status).toBe(401);
