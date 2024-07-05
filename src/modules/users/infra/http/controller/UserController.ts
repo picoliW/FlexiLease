@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { instanceToInstance } from "class-transformer";
 import CreateUserService from "@modules/users/services/CreateUserService";
 import { container } from "tsyringe";
 import ListUserService from "@modules/users/services/ListUserService";
@@ -17,7 +16,7 @@ export default class UsersController {
 
     const users = await listUser.execute();
 
-    return res.json(instanceToInstance(users));
+    return res.json(users);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -36,7 +35,7 @@ export default class UsersController {
         qualified,
       });
 
-      return response.status(201).json(instanceToInstance(user));
+      return response.status(201).json(user);
     } catch (error) {
       if (error instanceof ConflictError) {
         return response.status(409).json({ message: error.message });
@@ -70,7 +69,7 @@ export default class UsersController {
       return res.status(404).json({ error: "User not found" });
     }
 
-    return res.json(instanceToInstance(user));
+    return res.json(user);
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
