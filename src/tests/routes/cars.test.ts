@@ -13,6 +13,28 @@ beforeAll(async () => {
   await dataSource.initialize();
 });
 
+beforeEach(async () => {
+  await dataSource.dropDatabase();
+
+  const response = await request(app)
+    .post(MAIN_ROUTE)
+    .send({
+      model: "Uno",
+      color: "Black",
+      year: "2022",
+      value_per_day: 100,
+      accessories: [
+        { description: "Cool car" },
+        { description: "Bullet proof" },
+      ],
+      number_of_passengers: 5,
+    })
+    .set("Authorization", `Bearer ${TOKEN}`);
+
+  carId = response.body._id;
+  accessoryId = response.body.accessories[0].id;
+});
+
 afterAll(async () => {
   await dataSource.dropDatabase();
   await dataSource.destroy();
@@ -29,8 +51,8 @@ describe("Car Routes", () => {
           year: "2022",
           value_per_day: 100,
           accessories: [
-            { description: "Cool car" },
-            { description: "Bullet proof" },
+            { description: "Good engine" },
+            { description: "Nice car" },
           ],
           number_of_passengers: 5,
         })
@@ -39,9 +61,6 @@ describe("Car Routes", () => {
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty("_id");
       expect(response.body.model).toBe("Uno");
-
-      carId = response.body._id;
-      accessoryId = response.body.accessories[0].id;
     });
   });
 

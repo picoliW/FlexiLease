@@ -2,7 +2,6 @@ import request from "supertest";
 import { app } from "@shared/infra/http/app";
 import { dataSource } from "@shared/infra/typeorm";
 import { ObjectId } from "mongodb";
-import { object } from "joi";
 
 const CAR_ROUTE = "/api/v1/car";
 const USER_ROUTE = "/api/v1/user";
@@ -15,6 +14,10 @@ let reserveId: ObjectId;
 
 beforeAll(async () => {
   await dataSource.initialize();
+});
+
+beforeEach(async () => {
+  await dataSource.dropDatabase();
 
   const userResponse = await request(app)
     .post(USER_ROUTE)
@@ -47,6 +50,18 @@ beforeAll(async () => {
     .set("Authorization", `Bearer ${TOKEN}`);
 
   carId = carResponse.body._id;
+
+  const response = await request(app)
+    .post(MAIN_ROUTE)
+    .send({
+      id_user: userId,
+      id_car: carId,
+      start_date: "01/01/2024",
+      end_date: "05/01/2024",
+    })
+    .set("Authorization", `Bearer ${TOKEN}`);
+
+  reserveId = response.body._id;
 });
 
 afterAll(async () => {
@@ -62,12 +77,11 @@ describe("Reserve Routes", () => {
         .send({
           id_user: userId,
           id_car: carId,
-          start_date: "01/01/2024",
-          end_date: "05/01/2024",
+          start_date: "06/01/2024",
+          end_date: "10/01/2024",
         })
         .set("Authorization", `Bearer ${TOKEN}`);
 
-      reserveId = response.body._id;
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty("_id");
       expect(response.body).toHaveProperty("final_value");
