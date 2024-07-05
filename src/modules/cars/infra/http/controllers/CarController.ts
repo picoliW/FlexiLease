@@ -5,7 +5,6 @@ import ShowOneCarService from "@modules/cars/services/ShowOneCarService";
 import UpdateAccessoryService from "@modules/cars/services/UpdateAccessoryService";
 import UpdateCarService from "@modules/cars/services/UpdateCarService";
 import { NotFoundError } from "@shared/errors/NotFoundError";
-import { instanceToInstance } from "class-transformer";
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 import { container } from "tsyringe";
@@ -24,7 +23,7 @@ export class CarController {
     const totalPages = Math.ceil(total / limit);
 
     return res.json({
-      cars: cars.map(car => instanceToInstance(car)),
+      cars: JSON.parse(JSON.stringify(cars)),
       total,
       limit,
       offset: page,
@@ -51,7 +50,7 @@ export class CarController {
       number_of_passengers,
     });
 
-    return res.status(201).json(instanceToInstance(car));
+    return res.status(201).json(car);
   }
 
   public async delete(req: Request, res: Response): Promise<Response> {
@@ -91,7 +90,7 @@ export class CarController {
         number_of_passengers,
       });
 
-      return res.status(201).json(instanceToInstance(car));
+      return res.status(201).json(car);
     } catch (error) {
       if (error instanceof NotFoundError) {
         return res.status(404).json({ message: error.message });
@@ -110,7 +109,7 @@ export class CarController {
       return res.status(404).json({ error: "Car not found" });
     }
 
-    return res.json(instanceToInstance(car));
+    return res.json(car);
   }
 
   public async updateAccessory(req: Request, res: Response): Promise<Response> {
