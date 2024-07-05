@@ -34,11 +34,7 @@ describe("User Routes", () => {
       expect(response.body.email).toBe("luiz@gmail.com");
       expect(response.status).toBe(201);
 
-      const userRepository = dataSource.getRepository("User");
-      const user = await userRepository.findOne({
-        where: { email: "luiz@gmail.com" },
-      });
-      userId = user?._id;
+      userId = response.body._id;
     });
 
     test("Should not create an user with existing CPF", async () => {
@@ -208,7 +204,6 @@ describe("User Routes", () => {
 
     test("Should delete an user", async () => {
       const response = await request(app).delete(`${MAIN_ROUTE}/${userId}`);
-
       expect(response.status).toBe(204);
     });
   });
