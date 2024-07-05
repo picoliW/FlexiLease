@@ -22,6 +22,7 @@ class UpdateReserveService {
     id_user,
     start_date,
     end_date,
+    id_car,
   }: IUpdateReserve): Promise<Reserve> {
     const reserve = await this.reserveRepository.findById(new ObjectId(_id));
     if (!reserve) {
@@ -32,18 +33,21 @@ class UpdateReserveService {
     if (start_date) reserve.start_date = start_date;
     if (end_date) reserve.end_date = end_date;
 
-    const car = await this.carRepository.findById(new ObjectId(reserve.id_car));
-    if (!car) {
-      throw new NotFoundError("Car not found");
-    }
+    if (id_car) {
+      const car = await this.carRepository.findById(new ObjectId(id_car));
+      if (!car) {
+        throw new NotFoundError("Car not found");
+      }
+      reserve.id_car = id_car;
 
-    if (reserve.start_date && reserve.end_date) {
-      const startDate = parse(reserve.start_date, "dd/MM/yyyy", new Date());
-      const endDate = parse(reserve.end_date, "dd/MM/yyyy", new Date());
-      const days = differenceInDays(endDate, startDate);
+      if (reserve.start_date && reserve.end_date) {
+        const startDate = parse(reserve.start_date, "dd/MM/yyyy", new Date());
+        const endDate = parse(reserve.end_date, "dd/MM/yyyy", new Date());
+        const days = differenceInDays(endDate, startDate);
 
-      const final_value = (car.value_per_day * days).toFixed(2);
-      reserve.final_value = final_value;
+        const final_value = (car.value_per_day * days).toFixed(2);
+        reserve.final_value = final_value;
+      }
     }
 
     await this.reserveRepository.save(reserve);
