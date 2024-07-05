@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "@shared/infra/http/app";
 import { dataSource } from "@shared/infra/typeorm";
 import { ObjectId } from "mongodb";
+import e from "express";
 
 const MAIN_ROUTE = "/api/v1/car";
 const TOKEN =
@@ -11,6 +12,28 @@ let accessoryId: ObjectId;
 
 beforeAll(async () => {
   await dataSource.initialize();
+});
+
+beforeEach(async () => {
+  await dataSource.dropDatabase();
+
+  const response = await request(app)
+    .post(MAIN_ROUTE)
+    .send({
+      model: "Uno",
+      color: "Black",
+      year: "2022",
+      value_per_day: 100,
+      accessories: [
+        { description: "Cool car" },
+        { description: "Bullet proof" },
+      ],
+      number_of_passengers: 5,
+    })
+    .set("Authorization", `Bearer ${TOKEN}`);
+
+  carId = response.body._id;
+  accessoryId = response.body.accessories[0].id;
 });
 
 afterAll(async () => {
@@ -29,8 +52,8 @@ describe("Car Routes", () => {
           year: "2022",
           value_per_day: 100,
           accessories: [
-            { description: "Cool car" },
-            { description: "Bullet proof" },
+            { description: "Good engine" },
+            { description: "Nice car" },
           ],
           number_of_passengers: 5,
         })
@@ -39,9 +62,6 @@ describe("Car Routes", () => {
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty("_id");
       expect(response.body.model).toBe("Uno");
-
-      carId = response.body._id;
-      accessoryId = response.body.accessories[0].id;
     });
   });
 
@@ -107,6 +127,18 @@ describe("Car Routes", () => {
       expect(response.body.accessories[0].description).toBe(
         "Updated accessory",
       );
+    });
+
+    test("Should delete a car accessory if already exists", async () => {
+      const response = await request(app)
+        .patch(`${MAIN_ROUTE}/${carId}/accessories/${accessoryId}`)
+        .send({
+          description: "Cool car",
+        })
+        .set("Authorization", `Bearer ${TOKEN}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.accessories.length).toBe(1);
     });
 
     test("Should not update a car accessory with invalid id", async () => {

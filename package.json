@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand",
+    "test:user": "jest user.test.ts",
+    "test:car": "jest cars.test.ts",
+    "test:reserve": "jest reserve.test.ts",
+    "test:cov": "jest --coverage --runInBand",
     "start": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "secure-mode": "jest --watchAll --verbose=true"
