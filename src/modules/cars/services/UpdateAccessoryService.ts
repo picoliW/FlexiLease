@@ -21,20 +21,22 @@ class UpdateAccessoryService {
       throw new NotFoundError("Car not found");
     }
 
-    const accessory = car.accessories.find(acc => acc.id.equals(accessoryId));
+    const accessoryIndex = car.accessories.findIndex(acc =>
+      acc.id.equals(accessoryId),
+    );
 
-    if (!accessory) {
+    if (accessoryIndex === -1) {
       throw new NotFoundError("Accessory not found");
     }
 
-    const existingAccessory = car.accessories.find(
+    const existingAccessoryIndex = car.accessories.findIndex(
       acc => acc.description === newDescription,
     );
 
-    if (existingAccessory) {
-      accessory.description = "";
+    if (existingAccessoryIndex !== -1) {
+      car.accessories.splice(existingAccessoryIndex, 1);
     } else {
-      accessory.description = newDescription;
+      car.accessories[accessoryIndex].description = newDescription;
     }
 
     await this.carRepository.save(car);

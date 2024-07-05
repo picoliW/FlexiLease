@@ -4,7 +4,6 @@ import { ObjectId } from "mongodb";
 
 export class Accessory {
   @IsString()
-  @Exclude()
   id: ObjectId;
 
   @IsString()

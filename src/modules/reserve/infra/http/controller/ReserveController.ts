@@ -46,7 +46,7 @@ export default class ReserveController {
         id_car,
       });
 
-      return response.json(instanceToInstance(reserve));
+      return response.json(reserve);
     } catch (error) {
       if (error instanceof ConflictError) {
         return response.status(409).json({ message: error.message });
@@ -66,7 +66,7 @@ export default class ReserveController {
       const objectId = new ObjectId(id);
       const reserve = await showReserve.execute(objectId);
 
-      return res.json(instanceToInstance(reserve));
+      return res.json(reserve);
     } catch (error) {
       if (error instanceof NotFoundError) {
         return res.status(404).json({ message: error.message });
@@ -88,7 +88,7 @@ export default class ReserveController {
         end_date,
       });
 
-      return res.status(201).json(instanceToInstance(reserve));
+      return res.status(201).json(reserve);
     } catch (error) {
       if (error instanceof NotFoundError) {
         return res.status(404).json({ message: error.message });
