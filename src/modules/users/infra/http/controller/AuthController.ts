@@ -9,9 +9,9 @@ export default class AuthController {
     const loginService = container.resolve(LoginService);
 
     try {
-      const { user, token } = await loginService.execute({ email, password });
+      const { token } = await loginService.execute({ email, password });
 
-      return response.json({ user, token });
+      return response.json({ token });
     } catch (error) {
       if (error instanceof Error) {
         return response.status(401).json({ message: error.message });
