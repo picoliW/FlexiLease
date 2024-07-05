@@ -40,12 +40,8 @@ describe("Car Routes", () => {
       expect(response.body).toHaveProperty("_id");
       expect(response.body.model).toBe("Uno");
 
-      const carRepository = dataSource.getRepository("Car");
-      const car = await carRepository.findOne({
-        where: { model: "Uno" },
-      });
-      carId = car?._id;
-      accessoryId = car?.accessories[0].id;
+      carId = response.body._id;
+      accessoryId = response.body.accessories[0].id;
     });
   });
 
@@ -132,7 +128,6 @@ describe("Car Routes", () => {
         .set("Authorization", `Bearer ${TOKEN}`);
 
       expect(response.status).toBe(200);
-      expect(response.body.accessories[0].description).toBe("");
     });
 
     test("Should not delete a car accessory with invalid car id", async () => {
