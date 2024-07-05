@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "@shared/infra/http/app";
 import { dataSource } from "@shared/infra/typeorm";
 import { ObjectId } from "mongodb";
+import e from "express";
 
 const MAIN_ROUTE = "/api/v1/car";
 const TOKEN =
@@ -126,6 +127,18 @@ describe("Car Routes", () => {
       expect(response.body.accessories[0].description).toBe(
         "Updated accessory",
       );
+    });
+
+    test("Should delete a car accessory if already exists", async () => {
+      const response = await request(app)
+        .patch(`${MAIN_ROUTE}/${carId}/accessories/${accessoryId}`)
+        .send({
+          description: "Cool car",
+        })
+        .set("Authorization", `Bearer ${TOKEN}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.accessories.length).toBe(1);
     });
 
     test("Should not update a car accessory with invalid id", async () => {
