@@ -1,11 +1,9 @@
 import { Column, Entity, ObjectIdColumn } from "typeorm";
 import { ObjectId } from "mongodb";
-import { Exclude } from "class-transformer";
 
 @Entity("reserves")
 class Reserve {
   @ObjectIdColumn()
-  @Exclude()
   _id: ObjectId;
 
   @Column()

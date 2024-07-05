@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { instanceToInstance } from "class-transformer";
 import { container } from "tsyringe";
 import CreateReserveService from "@modules/reserve/services/CreateReserveService";
 import { ConflictError } from "@shared/errors/ConflictError";
@@ -25,7 +24,7 @@ export default class ReserveController {
     const totalPages = Math.ceil(total / limit);
 
     return res.json({
-      reserves: reserves.map(reserve => instanceToInstance(reserve)),
+      reserves: reserves.map(reserve => reserve),
       total,
       limit,
       offset: page,
@@ -46,7 +45,7 @@ export default class ReserveController {
         id_car,
       });
 
-      return response.json(reserve);
+      return response.status(201).json(reserve);
     } catch (error) {
       if (error instanceof ConflictError) {
         return response.status(409).json({ message: error.message });
@@ -78,7 +77,7 @@ export default class ReserveController {
   public async update(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
-      const { id_user, start_date, end_date } = req.body;
+      const { id_user, start_date, end_date, id_car } = req.body;
       const updateReserve = container.resolve(UpdateReserveService);
       const objectId = new ObjectId(id);
       const reserve = await updateReserve.execute({
@@ -86,6 +85,7 @@ export default class ReserveController {
         id_user,
         start_date,
         end_date,
+        id_car,
       });
 
       return res.status(201).json(reserve);
