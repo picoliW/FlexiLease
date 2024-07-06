@@ -65,6 +65,23 @@ import { Joi, Segments, celebrate } from "celebrate";
  *           type: string
  *         _id:
  *           type: string
+ *     LoginUser:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           default: joaozinho@email.com
+ *         password:
+ *           type: string
+ *           default: 123456
+ *     LoginUserResponse:
+ *       type: object
+ *       properties:
+ *         token:
+ *           type: string
  */
 
 export const CreateUserSchema = celebrate({
