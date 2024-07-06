@@ -1,6 +1,6 @@
 import { ICarRepository } from "@modules/cars/domain/repositories/ICarRepository";
 import { dataSource } from "@shared/infra/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import Car from "../entities/Cars";
 import { ICreateCar } from "@modules/cars/domain/models/ICreateCar";
 import { ObjectId } from "mongodb";
@@ -58,11 +58,13 @@ class CarRepository implements ICarRepository {
     return this.ormRepository.save(car);
   }
 
-  public async findWithPagination(
+  public async findWithFilters(
+    conditions: FindOptionsWhere<Car>,
     limit: number,
     offset: number,
   ): Promise<[Car[], number]> {
     const [cars, total] = await this.ormRepository.findAndCount({
+      where: conditions,
       skip: offset,
       take: limit,
     });

@@ -11,14 +11,14 @@ import { container } from "tsyringe";
 
 export class CarController {
   public async index(req: Request, res: Response): Promise<Response> {
-    let { page = 1, limit = 100 } = req.query;
+    let { page = 1, limit = 100, ...filters } = req.query;
     page = Number(page);
     limit = Number(limit);
 
     const offset = (page - 1) * limit;
 
     const listCar = container.resolve(ListCarService);
-    const { cars, total } = await listCar.execute({ limit, offset });
+    const { cars, total } = await listCar.execute({ limit, offset, filters });
 
     const totalPages = Math.ceil(total / limit);
 
