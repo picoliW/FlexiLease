@@ -12,23 +12,27 @@ import DeleteReserveService from "@modules/reserve/services/DeleteReserveService
 
 export default class ReserveController {
   public async index(req: Request, res: Response): Promise<Response> {
-    let { page = 1, limit = 100 } = req.query;
+    let { page = 1, limit = 100, ...filters } = req.query;
     page = Number(page);
     limit = Number(limit);
 
     const offset = (page - 1) * limit;
 
     const listReserve = container.resolve(ListReserveService);
-    const { reserves, total } = await listReserve.execute({ limit, offset });
+    const { reserves, total } = await listReserve.execute({
+      limit,
+      offset,
+      filters,
+    });
 
     const totalPages = Math.ceil(total / limit);
 
     return res.json({
-      reserves: reserves.map(reserve => reserve),
+      reserves: JSON.parse(JSON.stringify(reserves)),
       total,
       limit,
       offset: page,
-      totalPages,
+      offsets: totalPages,
     });
   }
 
