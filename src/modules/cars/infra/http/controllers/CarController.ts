@@ -90,7 +90,7 @@ export class CarController {
         number_of_passengers,
       });
 
-      return res.status(201).json(car);
+      return res.status(200).json(car);
     } catch (error) {
       if (error instanceof NotFoundError) {
         return res.status(404).json({ message: error.message });
