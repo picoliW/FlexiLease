@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { dataSource } from "@shared/infra/typeorm";
 import Reserve from "../entities/Reserve";
 import { ICreateReserve } from "@modules/reserve/domain/models/ICreateReserve";
@@ -91,6 +91,19 @@ class ReserveRepository implements IReserveRepository {
 
   public async remove(reserve: Reserve): Promise<void> {
     await this.ormRepository.remove(reserve);
+  }
+
+  public async findWithFilters(
+    conditions: FindOptionsWhere<Reserve>,
+    limit: number,
+    offset: number,
+  ): Promise<[Reserve[], number]> {
+    const [reserves, total] = await this.ormRepository.findAndCount({
+      where: conditions,
+      skip: offset,
+      take: limit,
+    });
+    return [reserves, total];
   }
 }
 
