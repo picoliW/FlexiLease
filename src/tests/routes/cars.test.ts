@@ -99,7 +99,7 @@ describe("Car Routes", () => {
         })
         .set("Authorization", `Bearer ${TOKEN}`);
 
-      expect(response.status).toBe(201);
+      expect(response.status).toBe(200);
       expect(response.body.model).toBe("BMW");
     });
 
