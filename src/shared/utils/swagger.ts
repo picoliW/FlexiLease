@@ -10,7 +10,7 @@ const options: swaggerJsdoc.Options = {
       title: "FlexiLease - OpenAPI 3.0",
       version,
       description:
-        "O projeto consiste no desenvolvimento de uma FULL API REST para uma locadora de carros, utilizando as tecnologias e conhecimentos aprendidos nos cursos. O projeto é individual Esperamos ver um código entendível e bem organizado, seguindo os requisitos solicitados.",
+        "O projeto consiste no desenvolvimento de uma FULL API REST para uma locadora de carros, utilizando as tecnologias e conhecimentos aprendidos nos cursos.",
     },
     components: {
       securitySchemes: {
