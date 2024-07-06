@@ -1,6 +1,7 @@
 import Reserve from "@modules/reserve/infra/typeorm/entities/Reserve";
 import { ICreateReserve } from "../models/ICreateReserve";
 import { ObjectId } from "mongodb";
+import { FindOptionsWhere } from "typeorm";
 
 export interface IReserveRepository {
   create({
@@ -21,8 +22,8 @@ export interface IReserveRepository {
     end_date: string,
   ): Promise<Reserve[]>;
   find(): Promise<Reserve[]>;
-  findByParams(params: Record<string, any>): Promise<Reserve[]>;
-  findWithPagination(
+  findWithFilters(
+    conditions: FindOptionsWhere<Reserve>,
     limit: number,
     offset: number,
   ): Promise<[Reserve[], number]>;
