@@ -6,6 +6,7 @@ import express from "express";
 import routes from "./routes";
 import { ErrorHandlerMiddleware } from "./middlewares/ErrorHandler";
 import { NotFound } from "./middlewares/NotFound";
+import swaggerDocs from "@shared/utils/swagger";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors());
 
 app.use("/api/v1", routes);
 
+swaggerDocs(app, 3000);
 app.use(errors());
 app.use(ErrorHandlerMiddleware);
 app.use(NotFound);
