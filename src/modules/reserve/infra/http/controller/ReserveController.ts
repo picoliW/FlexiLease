@@ -88,7 +88,7 @@ export default class ReserveController {
         id_car,
       });
 
-      return res.status(201).json(reserve);
+      return res.status(200).json(reserve);
     } catch (error) {
       if (error instanceof NotFoundError) {
         return res.status(404).json({ message: error.message });
