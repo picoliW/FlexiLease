@@ -2,6 +2,7 @@ import { ICreateCar } from "../models/ICreateCar";
 import { ICars } from "../models/ICars";
 import Car from "@modules/cars/infra/typeorm/entities/Cars";
 import { ObjectId } from "mongodb";
+import { FindOptionsWhere } from "typeorm";
 
 export interface ICarRepository {
   create(data: ICreateCar): Promise<ICars>;
@@ -10,5 +11,9 @@ export interface ICarRepository {
   find(): Promise<Car[]>;
   remove(car: Car): Promise<void>;
   update(car: Car): Promise<Car>;
-  findWithPagination(limit: number, offset: number): Promise<[Car[], number]>;
+  findWithFilters(
+    conditions: FindOptionsWhere<Car>,
+    limit: number,
+    offset: number,
+  ): Promise<[Car[], number]>;
 }
