@@ -96,6 +96,13 @@ If using docker:
 
    ![UsingToken](https://imgur.com/8zzvqID.png)
    
+# To see swagger documentation:
+
+1. Run the application
+2. Open your browser
+3. Put this URL "http://localhost:3000/docs/"
+  
+   
 # .env data
 If using localhost:
 
