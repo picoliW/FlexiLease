@@ -2,9 +2,9 @@
 
 The project consists of developing a FULL REST API for a car rental company, using the technologies and knowledge learned in the courses.
 
-## Tecnologias Utilizadas
+## Main Features
 
-| Tecnologia                              | Utilizada           |
+| Feature                                 | Used                |
 |-----------------------------------------|---------------------|
 | Node.js with TypeScript                 | ✅                  |
 | Swagger documentation                   | ✅                  |
@@ -14,6 +14,8 @@ The project consists of developing a FULL REST API for a car rental company, usi
 | Github versioning                       | ✅                  |
 | Conventional Commits, Small commits     | ✅                  |
 | 100% Tests coverage                     | ✅                  |
+| Pagination                              | ✅                  |
+| Search by param                         | ✅                  |
 
 
 ## Installation
