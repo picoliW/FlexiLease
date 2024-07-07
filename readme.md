@@ -40,11 +40,11 @@ Follow the steps bellow to run the project
    ```
 3. Install dependencies:
    ```cmd
-   npm install (ou npm i)
+   npm install (or npm i)
    ```
 
 ## Running the application:
-If in localhot:
+If in localhost:
 
     npm start
     
@@ -76,7 +76,7 @@ If using docker:
 
 1. Click "body"
 2. Select "raw"
-2. SelectJSON
+2. Select "JSON"
 3. Type the request
 4. Click "Send"
 
