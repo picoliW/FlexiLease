@@ -2,7 +2,7 @@
 
 The project consists of developing a FULL REST API for a car rental company, using the technologies and knowledge learned in the courses.
 
-## Tecnologias Utilizadas
+## Main Functions
 
 | Tecnologia                              | Utilizada           |
 |-----------------------------------------|---------------------|
