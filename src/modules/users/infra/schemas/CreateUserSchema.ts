@@ -91,7 +91,9 @@ export const CreateUserSchema = celebrate({
     birth: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required().min(6),
-    cep: Joi.string().required(),
+    cep: Joi.string()
+      .regex(/^\d{5}-?\d{3}$/)
+      .required(),
     qualified: Joi.string().valid("sim", "não").required(),
   },
 });

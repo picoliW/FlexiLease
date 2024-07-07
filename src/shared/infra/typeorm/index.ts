@@ -8,6 +8,7 @@ require("dotenv").config();
 export const dataSource = new DataSource({
   type: "mongodb",
   database: process.env.DB_NAME,
+  host: process.env.DB_HOST,
   synchronize: true,
   logging: ["query", "error"],
   entities: [Car, User, Reserve],
