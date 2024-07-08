@@ -7,7 +7,6 @@ import { ObjectId } from "mongodb";
 @Entity("cars")
 class Car {
   @ObjectIdColumn()
-  @Exclude()
   _id: ObjectId;
 
   @Column()

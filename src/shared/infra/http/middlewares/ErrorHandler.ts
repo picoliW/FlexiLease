@@ -15,11 +15,14 @@ export const ErrorHandlerMiddleware = (
   if (!err) {
     return next();
   }
+
   const customError: CustomError = {
     statusCode: err.statusCode ?? HttpStatusCode.INTERNAL_SERVER_ERROR,
     message: err.message || SOMETHING_WRONG,
     error: err.error || INTERNAL_SERVER,
   };
 
-  return res.status(customError.statusCode as number).json(customError);
+  res.status(customError.statusCode as number).json(customError);
+
+  next();
 };
